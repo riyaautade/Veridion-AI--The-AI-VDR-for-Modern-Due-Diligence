@@ -14,17 +14,21 @@ Traditional VDRs provide document sharing, but the actual review process remains
 The platform enables sellers to securely share sensitive documents while allowing buyers to use AI-powered search, document intelligence, and risk analysis to accelerate due diligence decisions.
 
 ---
+## Features
 
-## 🚀 Features
+- **Secure Virtual Data Room** — Centralized platform for storing and managing confidential deal documents.
+- **AI Due Diligence Assistant** — Ask natural language questions and receive intelligent and source-backed cited answers from deal documents.
+- **AI-Powered Deal Insights** — Converts large volumes of documents into actionable business intelligence.
+- **Risk Intelligence Engine** — Detects potential deal risks, liabilities, and hidden concerns across documents.
+- **Retrieval-Augmented Generation (RAG)** — Combines vector search with LLMs for accurate, context-aware responses.
+- **Permission-Aware Retrieval** — Ensures AI responses are generated only from documents accessible to the user.
+- **Buyer Workspace** — Enables investors to analyze documents, discover risks, and accelerate decision-making.
+- **Seller Workspace** — Allows companies to securely share information while maintaining control.
+- **Role-Based Access Control** — Separate Buyer and Seller permissions to ensure controlled information sharing.
+- **Document Upload & Management** — Upload, organize, and manage business documents securely.
+- **Vector-Based Knowledge Storage** — Stores document embeddings for efficient similarity search and retrieval.
 
-- **Secure Deal Workspaces**: Dedicated encrypted environments for individual deals.
-- **Role-Based Access Control (RBAC)**: Strict segregation between Seller Admins, Buyer Executives, Lawyers, and Finance roles.
-- **RAG-Powered AI Search**: Ask complex legal, financial, or operational questions directly against uploaded deal documents. Answers include direct citations.
-- **Automated Risk Engine**: Custom Regex-based risk rules that automatically flag missing clauses, unusual dependencies, and liabilities across thousands of pages.
-- **Intelligent Due Diligence Reports**: One-click generation of comprehensive markdown reports summarizing the entire deal, risks, and findings.
-- **Document Management**: Upload, parse, and analyze DOCX and PDF documents securely.
-
-## 🛠️ Technology Stack
+## Technology Stack
 
 **Frontend**
 - React + TypeScript
@@ -37,10 +41,78 @@ The platform enables sellers to securely share sensitive documents while allowin
 - Qdrant (Vector Database for Embeddings)
 - groq API (LLM)
 - SQLAlchemy + Alembic
+- LangChain for RAG
 
 ---
+## System Design
 
-## 🐳 Quick Start (Docker)
+```mermaid
+flowchart TD
+    subgraph Client
+        UI[React + Tailwind UI]
+    end
+
+    subgraph Backend - FastAPI
+        API[API Routers]
+        Auth[JWT Authentication]
+        Deals[Deal Management]
+        Risks[Risk Rule Engine]
+        RAG[RAG & Search Pipeline]
+    end
+
+    subgraph Data Layer
+        PG[(PostgreSQL)]
+        QD[(Qdrant Vector DB)]
+        Storage[Local File Storage]
+    end
+
+    subgraph External AI
+        Groq[Groq API - LLaMA 3]
+    end
+
+    UI <-->|REST / JSON| API
+    API <--> Auth
+    API <--> Deals
+    API <--> Risks
+    API <--> RAG
+
+    Auth <--> PG
+    Deals <--> PG
+    Risks <--> PG
+
+    RAG -->|1. Fetch chunks| QD
+    RAG -->|2. Send Prompt + Context| Groq
+    
+    API -->|Save Docs| Storage
+```
+
+---
+## Project Structure
+
+```
+├── backend/
+│   ├── app/
+│   │   ├── ai/            # Groq LLM and Embeddings integrations
+│   │   ├── api/routers/   # FastAPI route definitions
+│   │   ├── database/      # SQLAlchemy models & session
+│   │   ├── schemas/       # Pydantic validation schemas
+│   │   └── services/      # Core business logic
+│   ├── alembic/           # Database migration scripts
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Application views (Dashboard, DealWorkspace, etc.)
+│   │   ├── services/      # API integration
+│   │   └── hooks/         # Custom React hooks
+│   ├── index.css          # Tailwind configuration & global styles
+│   └── package.json
+├── storage/               # Local volume mounts for uploaded files
+└── docker-compose.yml     # Infrastructure orchestration
+```
+
+---
+## Get Started
 
 The easiest way to run Veridion AI locally is using Docker Compose. This will spin up the Backend, PostgreSQL database, pgAdmin, and Qdrant vector store.
 
@@ -74,30 +146,4 @@ npm install
 npm run dev
 ```
 The application will be available at `http://localhost:5173`.
-
----
-
-## 🏗️ Project Structure
-
-```
-├── backend/
-│   ├── app/
-│   │   ├── ai/            # Groq LLM and Embeddings integrations
-│   │   ├── api/routers/   # FastAPI route definitions
-│   │   ├── database/      # SQLAlchemy models & session
-│   │   ├── schemas/       # Pydantic validation schemas
-│   │   └── services/      # Core business logic
-│   ├── alembic/           # Database migration scripts
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Application views (Dashboard, DealWorkspace, etc.)
-│   │   ├── services/      # API integration
-│   │   └── hooks/         # Custom React hooks
-│   ├── index.css          # Tailwind configuration & global styles
-│   └── package.json
-├── storage/               # Local volume mounts for uploaded files
-└── docker-compose.yml     # Infrastructure orchestration
-```
 
