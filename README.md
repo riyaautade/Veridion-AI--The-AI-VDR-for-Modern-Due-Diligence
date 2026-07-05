@@ -2,7 +2,9 @@
 
 **AI-Powered Virtual Data Room for Modern Due Diligence**
 
-> An intelligent Virtual Data Room (VDR) platform that combines secure document management, permission-aware retrieval, and AI-powered due diligence assistance to help organizations analyze complex business transactions faster for secure dealmaking. 
+> An intelligent Virtual Data Room (VDR) platform that combines secure document management, permission-aware retrieval, and AI-powered due diligence assistance to help organizations analyze complex business transactions faster for secure dealmaking.
+
+Demo Video: https://www.loom.com/share/8dde09ce4bf446dcbed81586f4482eb9
 
 ---
 ## Overview
