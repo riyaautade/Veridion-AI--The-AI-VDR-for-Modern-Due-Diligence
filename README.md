@@ -1,8 +1,17 @@
 # Veridion AI
 
-**The AI Virtual Data Room Built for Modern Due Diligence**
+**AI-Powered Virtual Data Room for Modern Due Diligence**
 
-Veridion AI is an intelligent assistance platform that transforms complex M&A deal reviews into intelligent conversations. It combines secure document exchange, AI-powered analysis, and automated risk intelligence, helping sellers share with confidence and buyers decide with clarity.
+> An intelligent Virtual Data Room (VDR) platform that combines secure document management, permission-aware retrieval, and AI-powered due diligence assistance to help organizations analyze complex business transactions faster for secure dealmaking. 
+
+---
+## Overview
+
+Mergers, acquisitions, and investment decisions rely heavily on due diligence — a process where companies exchange and analyze thousands of confidential documents before a deal is finalized.
+Traditional VDRs provide document sharing, but the actual review process remains slow and manual. Analysts, investors, and legal teams still spend weeks reading contracts, financial reports, compliance documents, and operational records to identify potential risks.
+
+**Veridion AI transforms the traditional data room into an intelligent deal workspace.**
+The platform enables sellers to securely share sensitive documents while allowing buyers to use AI-powered search, document intelligence, and risk analysis to accelerate due diligence decisions.
 
 ---
 
@@ -19,7 +28,7 @@ Veridion AI is an intelligent assistance platform that transforms complex M&A de
 
 **Frontend**
 - React + TypeScript
-- Tailwind CSS (with custom Glassmorphism/Dark Mode UI)
+- Tailwind CSS
 - Vite
 
 **Backend**
@@ -43,13 +52,6 @@ The easiest way to run Veridion AI locally is using Docker Compose. This will sp
 ### 2. Environment Variables
 Create a `.env` file in the root directory based on the `.env.example` structure.
 You MUST provide your groq API key.
-```env
-GROQ_API_KEY=your_groq_api_key_here
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=vdrai
-POSTGRES_SERVER=postgres
-```
 
 ### 3. Start the Backend Infrastructure
 Run the following command from the root of the project:
@@ -80,7 +82,7 @@ The application will be available at `http://localhost:5173`.
 ```
 ├── backend/
 │   ├── app/
-│   │   ├── ai/            # Gemini LLM and Embeddings integrations
+│   │   ├── ai/            # Groq LLM and Embeddings integrations
 │   │   ├── api/routers/   # FastAPI route definitions
 │   │   ├── database/      # SQLAlchemy models & session
 │   │   ├── schemas/       # Pydantic validation schemas
@@ -91,7 +93,7 @@ The application will be available at `http://localhost:5173`.
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
 │   │   ├── pages/         # Application views (Dashboard, DealWorkspace, etc.)
-│   │   ├── services/      # Axios API integration
+│   │   ├── services/      # API integration
 │   │   └── hooks/         # Custom React hooks
 │   ├── index.css          # Tailwind configuration & global styles
 │   └── package.json
@@ -99,6 +101,3 @@ The application will be available at `http://localhost:5173`.
 └── docker-compose.yml     # Infrastructure orchestration
 ```
 
-## 🔒 Security Notice
-
-This platform includes simulated security features (like RBAC and JWT auth) for demonstration purposes. Before deploying to production, ensure proper secret management, CORS configuration, SSL/TLS certificates, and hardened database access.
