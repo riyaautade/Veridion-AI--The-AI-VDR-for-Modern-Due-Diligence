@@ -24,7 +24,7 @@ The platform enables sellers to securely share sensitive documents while allowin
 - **Permission-Aware Retrieval** — Ensures AI responses are generated only from documents accessible to the user.
 - **Buyer Workspace** — Enables investors to analyze documents, discover risks, and accelerate decision-making.
 - **Seller Workspace** — Allows companies to securely share information while maintaining control.
-- **Role-Based Access Control** — Separate Buyer and Seller permissions to ensure controlled information sharing.
+- **Role-Based Access Control** — Separate buyer finance, legal, executive and seller admin roles' permissions to ensure controlled information sharing.
 - **Document Upload & Management** — Upload, organize, and manage business documents securely.
 - **Vector-Based Knowledge Storage** — Stores document embeddings for efficient similarity search and retrieval.
 
