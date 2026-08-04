@@ -69,7 +69,7 @@ async def create_document(
         file_path=file_path,
         file_type=suffix.lstrip("."),
         document_type=document_type,
-        status=DocumentStatus.PROCESSING,
+        status=DocumentStatus.PROCESSING.value,
         allowed_roles=roles,
     )
     db.add(document)
@@ -85,7 +85,7 @@ async def create_document(
         normalized = normalize_text(extracted_text)
         document.extracted_text = normalized
         document.page_count = page_count
-        document.status = DocumentStatus.READY
+        document.status = DocumentStatus.READY.value
         document.processed_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(document)
@@ -94,7 +94,7 @@ async def create_document(
         index_document_chunks(document, chunks, roles)
         detect_and_save_risks(db, document, normalized)
     except Exception as exc:
-        document.status = DocumentStatus.FAILED
+        document.status = DocumentStatus.FAILED.value
         document.processing_error = str(exc)
         document.processed_at = datetime.now(timezone.utc)
         db.commit()
