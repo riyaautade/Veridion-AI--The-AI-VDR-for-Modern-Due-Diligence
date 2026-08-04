@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, UploadFile, status
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 
 from app.api.dependencies import CurrentUser
@@ -77,23 +77,6 @@ def update_document(
     return doc
 
 
-@router.get("/{document_id}/download")
-def download_document(
-    deal_id: int,
-    document_id: int,
-    current_user: CurrentUser,
-    db: Annotated[Session, Depends(get_db)],
-):
-    # Only deal managers may download original files
-    require_deal_manager(db, deal_id, current_user)
-    document = document_service.get_document(db, deal_id, document_id, current_user)
-    return FileResponse(
-        path=document.file_path,
-        filename=document.original_filename,
-        media_type="application/octet-stream",
-    )
-
-
 @router.get("/{document_id}/view")
 def view_document(
     deal_id: int,
@@ -101,12 +84,19 @@ def view_document(
     current_user: CurrentUser,
     db: Annotated[Session, Depends(get_db)],
 ):
+    """View document content as plain text (extracted text from database)."""
     document = document_service.get_document(db, deal_id, document_id, current_user)
-    media_type = "application/pdf" if document.file_type == "pdf" else "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    return FileResponse(
-        path=document.file_path,
-        media_type=media_type,
-        headers={"Content-Disposition": f'inline; filename="{document.original_filename}"'}
+    
+    if not document.extracted_text:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Document text not available."
+        )
+    
+    return Response(
+        content=document.extracted_text,
+        media_type="text/plain",
+        headers={"Content-Disposition": f'inline; filename="{document.original_filename}.txt"'}
     )
 
 
