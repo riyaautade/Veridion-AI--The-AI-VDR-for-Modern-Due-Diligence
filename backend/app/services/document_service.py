@@ -99,8 +99,22 @@ async def create_document(
         document.processed_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(document)
+    finally:
+        # Delete the uploaded file to save storage
+        await run_in_threadpool(_delete_file, file_path)
 
     return document
+
+
+def _delete_file(file_path: str) -> None:
+    """Delete the uploaded file after extraction."""
+    try:
+        path = Path(file_path)
+        if path.exists():
+            path.unlink()
+    except Exception:
+        # Silently ignore deletion errors
+        pass
 
 
 def _create_document_chunks(db: Session, document: Document, text: str) -> list[DocumentChunk]:
@@ -155,9 +169,6 @@ def delete_document(db: Session, deal_id: int, document_id: int, user: User) -> 
     if not document:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found.")
 
-    file_path = Path(document.file_path)
-    if file_path.exists():
-        file_path.unlink()
     db.delete(document)
     db.commit()
 
@@ -173,12 +184,6 @@ def delete_all_documents(db: Session, deal_id: int, user: User) -> None:
     )
 
     for document in documents:
-        file_path = Path(document.file_path)
-        if file_path.exists():
-            try:
-                file_path.unlink()
-            except Exception:
-                pass
         db.delete(document)
 
     db.commit()
