@@ -8,6 +8,10 @@ services:
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     plan: free
+    disks:
+      - name: documents
+        mountPath: /storage/documents
+        sizeGB: 10
     envVars:
       - key: DATABASE_URL
         fromDatabase:
