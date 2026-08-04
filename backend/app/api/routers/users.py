@@ -41,7 +41,7 @@ def list_buyers(
     company_id: int | None = None,
 ) -> list[User]:
     # Allow any authenticated user to list buyer users so they can add them to deals
-    stmt = select(User).where(User.role.like("buyer_%"))
+    stmt = select(User).where(User.role.astext.like("buyer_%"))
     if company_id:
         stmt = stmt.where(User.company_id == company_id)
     return list(db.scalars(stmt.order_by(User.created_at.desc())))
