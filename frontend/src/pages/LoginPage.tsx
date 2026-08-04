@@ -29,7 +29,7 @@ export default function LoginPage() {
     <main className="grid min-h-screen place-items-center bg-slate-950 px-6 py-10 text-white">
       <div className="w-full max-w-md rounded-[2rem] border border-white/10 bg-slate-900/95 p-8 shadow-card backdrop-blur-xl">
         <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Secure VDR access</p>
-        <h1 className="mt-4 text-3xl font-semibold">Sign in to VDR AI Copilot</h1>
+        <h1 className="mt-4 text-3xl font-semibold">Sign in to Veridion AI Copilot</h1>
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <label className="block">
             <span className="text-sm text-slate-300">Email</span>

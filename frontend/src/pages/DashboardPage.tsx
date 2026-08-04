@@ -32,7 +32,7 @@ export default function DashboardPage() {
     <main className="mx-auto max-w-7xl px-6 py-10">
       <header className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">VDR AI Copilot</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Veridion AI Copilot</p>
           <h1 className="text-3xl font-semibold text-slate-900">Deal Workspace Dashboard</h1>
           <p className="mt-2 max-w-2xl text-sm text-slate-600">
             A secure due diligence workspace for deal documents, AI search, and risk tracking.

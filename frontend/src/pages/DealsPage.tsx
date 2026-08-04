@@ -12,6 +12,7 @@ export default function DealsPage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const currentCompanyId = typeof user?.company === 'object' && user.company !== null ? user.company.id : undefined;
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState('');
   const [buyerCompanyId, setBuyerCompanyId] = useState('');
@@ -61,20 +62,20 @@ export default function DealsPage() {
               >
                 <option value="" disabled>Select Buyer Company</option>
                 {companies
-                  .filter(c => c.id !== user?.company?.id)
+                  .filter(c => c.id !== currentCompanyId)
                   .map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
               </select>
               <button className="rounded-full bg-slate-900 px-4 py-2 text-white" disabled={creating}>{creating ? 'Creating…' : 'Create'}</button>
             </form>
           )}
 
           <Link
-          to="/dashboard"
-          className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-card transition hover:bg-slate-50"
-        >
-          Back to dashboard
+            to="/dashboard"
+            className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-card transition hover:bg-slate-50"
+          >
+            Back to dashboard
           </Link>
         </div>
       </header>

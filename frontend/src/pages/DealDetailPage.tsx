@@ -38,7 +38,7 @@ export default function DealDetailPage() {
   
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [documentType, setDocumentType] = useState('general');
-  const [allowedRoles, setAllowedRoles] = useState('seller_admin,buyer_lawyer,buyer_finance,buyer_executive');
+  const [allowedRoles, setAllowedRoles] = useState<string[]>(DEFAULT_ROLES);
   
   const [report, setReport] = useState<DealReport | null>(null);
   const [generatingReport, setGeneratingReport] = useState(false);
@@ -148,7 +148,7 @@ export default function DealDetailPage() {
     const formData = new FormData();
     formData.append('file', uploadFile);
     formData.append('document_type', documentType);
-    formData.append('allowed_roles', allowedRoles);
+    formData.append('allowed_roles', allowedRoles.join(','));
 
     try {
       await uploadDocument(dealId, formData);
@@ -520,7 +520,9 @@ export default function DealDetailPage() {
                               <div key={idx} className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm text-sm">
                                 <div className="flex justify-between items-start mb-2">
                                   <p className="font-semibold text-brand-700">{source.filename}</p>
-                                  <span className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-600">Page {source.page_number ?? 'N/A'}</span>
+                                  {source.page_number != null && (
+                                    <span className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-600">Page {source.page_number}</span>
+                                  )}
                                 </div>
                                 <div className="border-l-2 border-brand-200 pl-3 text-slate-600 italic">
                                   "{source.text}"
@@ -563,7 +565,25 @@ export default function DealDetailPage() {
                         </div>
                         <div className="space-y-2">
                           <Label>Allowed roles</Label>
-                          <Input value={allowedRoles} onChange={(e) => setAllowedRoles(e.target.value)} placeholder={rolePlaceholder} />
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {DEFAULT_ROLES.map(role => (
+                              <label key={role} className="flex items-center space-x-2 text-sm bg-slate-50 border border-slate-200 px-3 py-1.5 rounded cursor-pointer hover:bg-slate-100">
+                                <input
+                                  type="checkbox"
+                                  className="rounded border-slate-300"
+                                  checked={allowedRoles.includes(role)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setAllowedRoles(prev => [...prev, role]);
+                                    } else {
+                                      setAllowedRoles(prev => prev.filter(r => r !== role));
+                                    }
+                                  }}
+                                />
+                                <span>{role.replace('_', ' ')}</span>
+                              </label>
+                            ))}
+                          </div>
                         </div>
                         <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
                           {submitting ? 'Uploading…' : 'Upload Document'}
